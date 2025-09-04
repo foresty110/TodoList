@@ -4,7 +4,142 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+
+    h1 {
+        color: #3CB4A5;
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 400px;
+        padding: 10px;
+        border: 2px solid #3CB4A5;
+        border-radius: 8px;
+        resize: none;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    #addBtn {
+        background-color: #FF7F50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #todolist {
+        width: 420px;
+    }
+
+    #todolist p {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        margin: 8px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    #todolist span {
+        flex-grow: 1;
+        font-size: 15px;
+    }
+
+    #todolist button {
+        margin-left: 8px;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+    }
+
+    #todolist button:nth-child(2) { /* 수정 버튼 */
+        background-color: #3CB4A5;
+        color: white;
+    }
+
+    #todolist button:nth-child(3) { /* 삭제 버튼 */
+        background-color: #FF7F50;
+        color: white;
+    }
+
+</style>
 <body>
 
+<h1> 할일 목록</h1>
+<textarea id="text" name="comment" rows="3" cols="40" placeholder="할 일을 입력하세요..."></textarea>
+<button onclick="addTODO()" id="addBtn">추가</button>
+
+<div id="todolist"></div>
+
+<script>
+
+    // 동적으로 아이템 추가
+    document.getElementById('addBtn').addEventListener('click', function () {
+        addList();
+    });
+
+    function addList() {
+        const userInput = document.getElementById('text').value;
+
+        // 목록 생성
+        const newItem = document.createElement('p');
+        document.getElementById('todolist').appendChild(newItem);
+
+        // 입력한 할일 내용 가져오기
+        const text = document.createElement('span');
+        text.textContent = userInput;
+        newItem.appendChild(text);
+
+        //수정 버튼 생성
+        const editBtn = document.createElement('button');
+        editBtn.textContent = '수정';
+        newItem.appendChild(editBtn);
+
+        // 수정 기능 연결
+        editBtn.addEventListener('click', function () {
+            text.textContent = prompt('새로운 내용을 입력하세요:', userInput);
+        });
+
+        //삭제 버튼 추가
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '삭제';
+        newItem.appendChild(deleteBtn);
+
+        //삭제 기능 연결
+        deleteBtn.addEventListener('click', function () {
+            newItem.remove();
+        });
+    }
+
+    //줄바꿈
+    document.getElementById('text').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // 줄바꿈 막기
+            addList(); // 대신 내가 원하는 기능 실행
+        }
+    });
+
+</script>
 </body>
 </html>
